@@ -1,0 +1,9 @@
+version: "3.7"
+services:
+  app:
+    image: golang
+    tty: true
+    container_name: scrocrix-algorithms
+    working_dir: /etc/local/scrocrix-algorithms
+    volumes:
+      - ./:/etc/local/scrocrix-algorithms
