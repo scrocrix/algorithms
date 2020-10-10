@@ -10,68 +10,61 @@ var (
 )
 
 type Interface interface {
-	InsertionSort(numbers []int, orderBy string) ([]int, error)
-	SortAlphabetically(letters []string) []string
+	InsertionSortIntegers(items interface{}, orderBy string) ([]int, error)
+	InsertionSortAlphabetically(letters []string) []string
 }
 
 type sort struct {
 	Interface
 }
 
-// NewSort initializes the sort struct for sorting
+// NewSort initializes the sortIntegers struct for sorting
 func NewSort() *sort {
 	return &sort{}
 }
 
-// InsertionSort return an indefinite slice of ordered numbers. The order of these numbers might be
+// InsertionSortIntegers return an indefinite slice of ordered numbers. The order of these numbers might be
 // either Ascending or Descending, depending on the context.
-func (i *sort) InsertionSort(items interface{}, orderBy string) ([]int, error) {
+func (i *sort) InsertionSortIntegers(items []int, orderBy string) ([]int, error) {
 	if len(orderBy) == 0 {
 		return nil, errors.New(ErrEmptyParameter)
 	}
 
-	for key, item := range items.([]int) {
-		items = i.sort(items.([]int), orderBy, key, item)
-	}
-
-	return items.([]int), nil
-}
-
-// SortAlphabetically return an indefinite slice of ordered letters.
-func (i *sort) SortAlphabetically(letters []string) []string {
-	for key, letter := range letters {
+	for key, item := range items {
 		o := key - 1
 
-		for o >= 0 && letters[o] > letter {
-			letters[o + 1] = letters[o]
-			o = o - 1
+		if orderBy == OrderAscending {
+			for o >= 0 && items[o] > item {
+				items[o+1] = items[o]
+				o = o - 1
+			}
 		}
 
-		// as default, we place the letter in the same place
-		letters[o + 1] = letter
+		if orderBy == OrderDescending {
+			for o >= 0 && items[o] < item {
+				items[o+1] = items[o]
+				o = o - 1
+			}
+		}
+
+		items[o+1] = item
 	}
 
-	return letters
+	return items, nil
 }
 
-func (i *sort) sort(items []int, order string, key int, item int) []int {
-	o := key - 1
+// InsertionSortAlphabetically return an indefinite slice of ordered letters.
+func (i *sort) InsertionSortAlphabetically(items []string) []string {
+	for key, item := range items {
+		o := key - 1
 
-	if order == OrderAscending {
 		for o >= 0 && items[o] > item {
 			items[o+1] = items[o]
 			o = o - 1
 		}
-	}
 
-	if order == OrderDescending {
-		for o >= 0 && items[o] < item {
-			items[o+1] = items[o]
-			o = o - 1
-		}
+		items[o+1] = item
 	}
-
-	items[o+1] = item
 
 	return items
 }

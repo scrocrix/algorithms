@@ -11,42 +11,42 @@ type insertionSortSuite struct {
 	suite.Suite
 }
 
-func (suite *insertionSortSuite) TestInsertionSortReturnSliceOfIntegersInAscendingOrder() {
+func (suite *insertionSortSuite) TestInsertionSortIntegersReturnSliceOfIntegersInAscendingOrder() {
 	sut := sort.NewSort()
 
 	un := []int{5, 4, 2, 6, 1, 3}
-	result, _ := sut.InsertionSort(un, sort.OrderAscending)
+	result, _ := sut.InsertionSortIntegers(un, sort.OrderAscending)
 
 	assert.NotEmpty(suite.T(), result)
 	assert.Equal(suite.T(), len(un), len(result))
 	assert.Equal(suite.T(), []int{1, 2, 3, 4, 5, 6}, result)
 }
 
-func (suite *insertionSortSuite) TestInsertionSortReturnSliceOfIntegersInDescendingOrder() {
+func (suite *insertionSortSuite) TestInsertionSortIntegersReturnSliceOfIntegersInDescendingOrder() {
 	sut := sort.NewSort()
 
 	un := []int{5, 4, 2, 6, 1, 3}
-	result, _ := sut.InsertionSort(un, sort.OrderDescending)
+	result, _ := sut.InsertionSortIntegers(un, sort.OrderDescending)
 
 	assert.NotEmpty(suite.T(), result)
 	assert.Equal(suite.T(), len(un), len(result))
 	assert.Equal(suite.T(), []int{6, 5, 4, 3, 2, 1}, result)
 }
 
-func (suite *insertionSortSuite) TestInsertionSortReturnErrorWhenOrderByParameterIsEmpty() {
+func (suite *insertionSortSuite) TestInsertionSortIntegersReturnErrorWhenOrderByParameterIsEmpty() {
 	sut := sort.NewSort()
 
 	un := []int{5, 4, 2, 6, 1, 3}
-	_, err := sut.InsertionSort(un, "")
+	_, err := sut.InsertionSortIntegers(un, "")
 
 	assert.NotNil(suite.T(), err)
 	assert.Equal(suite.T(), sort.ErrEmptyParameter, err.Error())
 }
 
-func (suite *insertionSortSuite) TestSortAlphabeticallyReturnSliceOfStrings() {
+func (suite *insertionSortSuite) TestInsertionSortAlphabeticallyReturnSliceOfStrings() {
 	sut := sort.NewSort()
 
-	result := sut.SortAlphabetically([]string{"b", "a", "d", "e", "c"})
+	result := sut.InsertionSortAlphabetically([]string{"b", "a", "d", "e", "c"})
 
 	assert.NotEmpty(suite.T(), result)
 	assert.Equal(suite.T(), []string{"a", "b", "c", "d", "e"}, result)
