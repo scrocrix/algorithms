@@ -1,0 +1,14 @@
+version: 2.1
+jobs:
+  test:
+    docker:
+      - image: golang
+        name: app
+    steps:
+      - checkout
+      - run: go test ./...
+workflows:
+  version: 2
+  default:
+    jobs:
+      - test
