@@ -1,4 +1,4 @@
-module github.com/Scrocrix/algorithms
+module github.com/scrocrix/algorithms
 
 go 1.15
 

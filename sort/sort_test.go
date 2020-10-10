@@ -1,7 +1,7 @@
 package sort_test
 
 import (
-	"github.com/Scrocrix/algorithms/sort"
+	"github.com/scrocrix/algorithms/sort"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 	"testing"
