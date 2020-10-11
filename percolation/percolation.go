@@ -7,15 +7,15 @@ import (
 
 // Site represents a single cell from the percolation's grid.
 type Site struct {
-	Row int
-	Column int
-	IsOpened bool
+	Row       int
+	Column    int
+	IsOpened  bool
 	IsBlocked bool
-	Position int
+	Position  int
 }
 
 // Validate check if the arguments in given to Site is correct
-func (s *Site) Validate () error {
+func (s *Site) Validate() error {
 	if s.Row <= 0 || s.Column <= 0 {
 		return errors.New("error: either row or column arguments must be greater than zero")
 	}
@@ -27,18 +27,17 @@ func (s *Site) Validate () error {
 	return nil
 }
 
-
 type percolation struct {
-	rows int
+	rows    int
 	columns int
-	sites []Site
+	sites   []Site
 }
 
 // NewPercolation creates a new instances of percolation as well as, configures
 // the percolation grids being N-by-N size.
 func NewPercolation(row int, col int) (*percolation, error) {
 	percolation := &percolation{
-		rows: row,
+		rows:    row,
 		columns: col,
 	}
 
@@ -61,11 +60,11 @@ func (p *percolation) buildSites() error {
 
 	currentColumn := 1
 
-	for siteCount := 0; siteCount < p.rows * p.columns; siteCount++ {
+	for siteCount := 0; siteCount < p.rows*p.columns; siteCount++ {
 		var site Site
 
 		// verify if we must break to a new row
-		if siteCount % p.rows == 0 {
+		if siteCount%p.rows == 0 {
 			currentRow = (siteCount / p.rows) + 1
 
 			// after breaking into a new row, the column must be reset to its initial position
@@ -78,7 +77,7 @@ func (p *percolation) buildSites() error {
 		site.Position = siteCount
 
 		// randomly assign a blocked site to the percolation
-		site.IsBlocked = rand.Int() % 2 == 0
+		site.IsBlocked = rand.Int()%2 == 0
 
 		currentColumn++
 

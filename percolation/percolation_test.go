@@ -53,9 +53,9 @@ func (suite *percolationSuite) TestOpenReturnFalseWhenSiteHasBeenBlocked() {
 	sut, _ := percolation.NewPercolation(5, 5)
 
 	result, _ := sut.Open(percolation.Site{
-		Row: 1,
-		Column: 2,
-		IsOpened: false,
+		Row:       1,
+		Column:    2,
+		IsOpened:  false,
 		IsBlocked: true,
 	})
 
@@ -66,7 +66,7 @@ func (suite *percolationSuite) TestOpenReturnErrorWhenRowOrColumnAreLessThanZero
 	sut, _ := percolation.NewPercolation(5, 5)
 
 	isOpened, err := sut.Open(percolation.Site{
-		Row: 0,
+		Row:    0,
 		Column: 1,
 	})
 
@@ -75,7 +75,7 @@ func (suite *percolationSuite) TestOpenReturnErrorWhenRowOrColumnAreLessThanZero
 	assert.Equal(suite.T(), "error: either row or column arguments must be greater than zero", err.Error())
 
 	isOpened, err = sut.Open(percolation.Site{
-		Row: 1,
+		Row:    1,
 		Column: 0,
 	})
 
@@ -88,8 +88,8 @@ func (suite *percolationSuite) TestOpenReturnErrorWhenSiteWasNotFoundInPercolati
 	sut, _ := percolation.NewPercolation(5, 5)
 
 	isOpened, err := sut.Open(percolation.Site{
-		Row: 1,
-		Column: 1,
+		Row:      1,
+		Column:   1,
 		Position: 5,
 	})
 
@@ -102,8 +102,8 @@ func (suite *percolationSuite) TestOpenReturnErrorWhenSitePositionIsGreaterThanT
 	sut, _ := percolation.NewPercolation(5, 5)
 
 	isOpened, err := sut.Open(percolation.Site{
-		Row: 1,
-		Column: 1,
+		Row:      1,
+		Column:   1,
 		Position: 30,
 	})
 
@@ -116,8 +116,8 @@ func (suite *percolationSuite) TestOpenReturnErrorWhenSitePositionIsNegative() {
 	sut, _ := percolation.NewPercolation(5, 5)
 
 	isOpened, err := sut.Open(percolation.Site{
-		Row: 1,
-		Column: 1,
+		Row:      1,
+		Column:   1,
 		Position: -1,
 	})
 
