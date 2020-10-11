@@ -33,6 +33,28 @@ func (suite *searchTest) TestLinearSearchReturnErrorWhenItemWasNotFound() {
 	assert.Equal(suite.T(), "no such item \"Sao Paulo\" was found", err.Error())
 }
 
+func (suite *searchTest) TestBinaryReturnSearchNeedleFromSlice() {
+	sut := search.NewSearch()
+
+	result, _ := sut.Binary(67, []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97})
+
+	assert.Equal(suite.T(), 67, result)
+
+	result, _ = sut.Binary(3, []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97})
+
+	assert.Equal(suite.T(), 3, result)
+}
+
+func (suite *searchTest) TestBinaryReturnErrorWhenSearchNeedleWasNotFound() {
+	sut := search.NewSearch()
+
+	result, err := sut.Binary(100, []int{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97})
+
+	assert.Equal(suite.T(), -1, result)
+	assert.NotNil(suite.T(), err)
+	assert.Equal(suite.T(), "error: unable to locate \"100\"", err.Error())
+}
+
 func TestSearchTest(t *testing.T) {
 	suite.Run(t, new(searchTest))
 }
