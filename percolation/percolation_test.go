@@ -30,9 +30,41 @@ func (suite *percolationSuite) TestNewPercolationReturnErrorWhenSiteSizeDoesNotM
 func (suite *percolationSuite) TestOpenReturnTrueWhenSiteHasBeenOpened() {
 	sut, _ := percolation.NewPercolation(5, 5)
 
-	result := sut.Open(1, 2)
+	result, _ := sut.Open(1, 2)
 
 	assert.True(suite.T(), result)
+}
+
+func (suite *percolationSuite) TestOpenReturnErrorWhenRowOrColumnAreLessThanZero() {
+	sut, _ := percolation.NewPercolation(5, 5)
+
+	isOpened, err := sut.Open(0, 1)
+
+	assert.False(suite.T(), isOpened)
+	assert.Error(suite.T(), err)
+	assert.Equal(suite.T(), "error: either row or column arguments must be greater than zero", err.Error())
+
+	isOpened, err = sut.Open(1, 0)
+
+	assert.False(suite.T(), isOpened)
+	assert.Error(suite.T(), err)
+	assert.Equal(suite.T(), "error: either row or column arguments must be greater than zero", err.Error())
+}
+
+func (suite *percolationSuite) TestOpenReturnErrorWhenRowOrColumnAreGreaterThanPercolationSize() {
+	sut, _ := percolation.NewPercolation(5, 5)
+
+	isOpened, err := sut.Open(26, 2)
+
+	assert.False(suite.T(), isOpened)
+	assert.Error(suite.T(), err)
+	assert.Equal(suite.T(), "error: either row or column are greater than total sites count", err.Error())
+
+	isOpened, err = sut.Open(3, 12)
+
+	assert.False(suite.T(), isOpened)
+	assert.Error(suite.T(), err)
+	assert.Equal(suite.T(), "error: either row or column are greater than total sites count", err.Error())
 }
 
 func TestPercolationSuite(t *testing.T) {

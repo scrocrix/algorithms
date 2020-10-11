@@ -2,16 +2,29 @@ package percolation
 
 import "errors"
 
+// Grid Example: 5 by 5
+//
+// [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5]
+//  [2, 1], [2, 2], [2, 3], [2, 4], [2, 5]
+//  [3, 1], [3, 2], [3, 3], [3, 4], [3, 5]
+//  [4, 1], [4, 2], [4, 3], [4, 4], [4, 5]
+//  [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]]
+
 type percolation struct {
+	rows int
+	columns int
 	sites [][]int
 }
 
 // NewPercolation creates a new instances of percolation as well as, configures
 // the percolation grids being N-by-N size.
 func NewPercolation(row int, col int) (*percolation, error) {
-	percolation := &percolation{}
+	percolation := &percolation{
+		rows: row,
+		columns: col,
+	}
 
-	if err := percolation.buildSites(row, col); err != nil {
+	if err := percolation.buildSites(); err != nil {
 		return nil, err
 	}
 
@@ -19,8 +32,8 @@ func NewPercolation(row int, col int) (*percolation, error) {
 }
 
 // buildSites essentially generates the grids used in the percolation process.
-func (p *percolation) buildSites(row int, col int) error {
-	if row != col {
+func (p *percolation) buildSites() error {
+	if p.rows != p.columns {
 		return errors.New("error: row and column must be equal in order to create a quadratic percolation")
 	}
 
@@ -30,19 +43,19 @@ func (p *percolation) buildSites(row int, col int) error {
 
 	currentColumn := 1
 
-	for siteCount := 0; siteCount < row * col; siteCount++ {
+	for siteCount := 0; siteCount < p.rows * p.columns; siteCount++ {
 		var site []int
 
 		// verify if we must break to a new row
-		if siteCount % row == 0 {
-			currentRow = (siteCount / row) + 1
+		if siteCount % p.rows == 0 {
+			currentRow = (siteCount / p.rows) + 1
 
 			// after breaking into a new row, the column must be reset to its initial position
 			currentColumn = 1
 		}
 
-		site = append(site, currentColumn)
 		site = append(site, currentRow)
+		site = append(site, currentColumn)
 		currentColumn++
 
 		sites = append(sites, site)
@@ -60,6 +73,14 @@ func (p *percolation) GetSites() [][]int {
 
 // Open finds the site in the grid based on the coordinates and verifies if
 // the spot must or must not be opened.
-func (p *percolation) Open(row int, col int) bool {
-	return true
+func (p *percolation) Open(row int, col int) (bool, error) {
+	if row <= 0 || col <= 0 {
+		return false, errors.New("error: either row or column arguments must be greater than zero")
+	}
+
+	if row > p.rows || col > p.columns {
+		return false, errors.New("error: either row or column are greater than total sites count")
+	}
+
+	return true, nil
 }
