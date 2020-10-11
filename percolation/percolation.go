@@ -2,18 +2,10 @@ package percolation
 
 import "errors"
 
-// Grid Example: 5 by 5
-//
-// [[1, 1], [1, 2], [1, 3], [1, 4], [1, 5]
-//  [2, 1], [2, 2], [2, 3], [2, 4], [2, 5]
-//  [3, 1], [3, 2], [3, 3], [3, 4], [3, 5]
-//  [4, 1], [4, 2], [4, 3], [4, 4], [4, 5]
-//  [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]]
-
 type percolation struct {
 	rows int
 	columns int
-	sites [][]int
+	sites [][2]int
 }
 
 // NewPercolation creates a new instances of percolation as well as, configures
@@ -37,14 +29,14 @@ func (p *percolation) buildSites() error {
 		return errors.New("error: row and column must be equal in order to create a quadratic percolation")
 	}
 
-	var sites [][]int
+	var sites [][2]int
 
 	currentRow := 1
 
 	currentColumn := 1
 
 	for siteCount := 0; siteCount < p.rows * p.columns; siteCount++ {
-		var site []int
+		var site [2]int
 
 		// verify if we must break to a new row
 		if siteCount % p.rows == 0 {
@@ -54,8 +46,8 @@ func (p *percolation) buildSites() error {
 			currentColumn = 1
 		}
 
-		site = append(site, currentRow)
-		site = append(site, currentColumn)
+		site[0] = currentRow
+		site[1] = currentColumn
 		currentColumn++
 
 		sites = append(sites, site)
@@ -67,7 +59,7 @@ func (p *percolation) buildSites() error {
 }
 
 // GetSites return the sites that have been initialized with the percolation.
-func (p *percolation) GetSites() [][]int {
+func (p *percolation) GetSites() [][2]int {
 	return p.sites
 }
 
