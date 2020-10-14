@@ -27,7 +27,14 @@ func (s *Site) Validate() error {
 	return nil
 }
 
+type PInterface interface {
+	GetSites() []Site
+	Open(site Site) (bool, error)
+}
+
 type percolation struct {
+	PInterface
+
 	rows    int
 	columns int
 	sites   []Site

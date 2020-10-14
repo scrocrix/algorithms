@@ -3,9 +3,27 @@ package percolation_test
 import (
 	"github.com/scrocrix/algorithms/percolation"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/suite"
 	"testing"
 )
+
+// percolationMock represents the percolation interface used when
+// interacting with the percolation site grids.
+type percolationMock struct {
+	percolation.PInterface
+	mock.Mock
+}
+
+func (pm *percolationMock) GetSites() []percolation.Site {
+	args := pm.Called()
+	return args.Get(0).([]percolation.Site)
+}
+
+func (pm *percolationMock) Open(site percolation.Site) (bool, error) {
+	args := pm.Called(site)
+	return args.Bool(0), args.Error(1)
+}
 
 type percolationSuite struct {
 	suite.Suite
