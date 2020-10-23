@@ -1,31 +1,36 @@
 package sort
 
-import "errors"
+import (
+	"errors"
+)
 
 var (
 	OrderAscending  = "asc"
 	OrderDescending = "desc"
-
 	ErrEmptyParameter = "parameter must not be empty"
 )
 
-type Interface interface {
-	InsertionSortIntegers(items interface{}, orderBy string) ([]int, error)
-	InsertionSortAlphabetically(letters []string) []string
+type Sort interface {
+	// InsertionSort return an indefinite slice of ordered numbers. The order of these numbers might be
+	// either Ascending or Descending, depending on the context.
+	InsertionSort(items []int, orderBy string) ([]int, error)
+
+	// MergeSort is an efficient way to sort a large slice by separating the slice into two slices,
+	// individually sort them by making use of InsertionSort and then merging them together, therefore,
+	// "Merge" and "Sort".
+	MergeSort(item []int) []int
 }
 
 type sort struct {
-	Interface
+	Sort
 }
 
-// NewSort initializes the sortIntegers struct for sorting
-func NewSort() *sort {
+// NewSort constructs a new instance of Sort.
+func NewSort() Sort {
 	return &sort{}
 }
 
-// InsertionSortIntegers return an indefinite slice of ordered numbers. The order of these numbers might be
-// either Ascending or Descending, depending on the context.
-func (i *sort) InsertionSortIntegers(items []int, orderBy string) ([]int, error) {
+func (s *sort) InsertionSort(items []int, orderBy string) ([]int, error) {
 	if len(orderBy) == 0 {
 		return nil, errors.New(ErrEmptyParameter)
 	}
@@ -53,18 +58,13 @@ func (i *sort) InsertionSortIntegers(items []int, orderBy string) ([]int, error)
 	return items, nil
 }
 
-// InsertionSortAlphabetically return an indefinite slice of ordered letters.
-func (i *sort) InsertionSortAlphabetically(items []string) []string {
-	for key, item := range items {
-		o := key - 1
+func (s *sort) MergeSort(items []int) []int {
+	io := items[0:len(items)/2]
+	it := items[len(items)/2:]
 
-		for o >= 0 && items[o] > item {
-			items[o+1] = items[o]
-			o = o - 1
-		}
+	ios, _ := s.InsertionSort(io, OrderAscending)
+	its, _ := s.InsertionSort(it, OrderAscending)
+	si, _ := s.InsertionSort(append(ios, its...), OrderAscending)
 
-		items[o+1] = item
-	}
-
-	return items
+	return si
 }
