@@ -5,8 +5,8 @@ import (
 )
 
 var (
-	OrderAscending  = "asc"
-	OrderDescending = "desc"
+	OrderAscending    = "asc"
+	OrderDescending   = "desc"
 	ErrEmptyParameter = "parameter must not be empty"
 )
 
@@ -59,7 +59,7 @@ func (s *sort) InsertionSort(items []int, orderBy string) ([]int, error) {
 }
 
 func (s *sort) MergeSort(items []int) []int {
-	io := items[0:len(items)/2]
+	io := items[0 : len(items)/2]
 	it := items[len(items)/2:]
 
 	ios, _ := s.InsertionSort(io, OrderAscending)
