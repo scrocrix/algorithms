@@ -7,6 +7,7 @@ import (
 
 type Interface interface {
 	LinearSearch(search string, items []string) (string, error)
+	Binary(search int, items []int) (int, error)
 }
 
 type search struct {
