@@ -7,21 +7,21 @@ var (
 	OrderDescending = "desc"
 )
 
-type Inserstion interface {
+type Insertion interface {
 	// Sort return an indefinite slice of ordered numbers. The order of these numbers might be
 	// either Ascending or Descending, depending on the context.
 	Sort(items []int, orderBy string) ([]int, error)
 }
 
-type inserstion struct {
-	Inserstion
+type insertion struct {
+	Insertion
 }
 
-func NewInsertion() Inserstion {
-	return &inserstion{}
+func NewInsertion() Insertion {
+	return &insertion{}
 }
 
-func (s *inserstion) Sort(items []int, orderBy string) ([]int, error) {
+func (s *insertion) Sort(items []int, orderBy string) ([]int, error) {
 	if len(orderBy) == 0 {
 		return nil, errors.New(ErrEmptyParameter)
 	}
