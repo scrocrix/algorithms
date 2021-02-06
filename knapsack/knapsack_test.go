@@ -3,22 +3,10 @@ package knapsack_test
 import (
 	"github.com/scrocrix/algorithms/knapsack"
 	"github.com/scrocrix/algorithms/sort"
-	"github.com/stretchr/testify/mock"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"testing"
 )
-
-type sortMock struct {
-	mock.Mock
-	sort.Sort
-}
-
-func (mock *sortMock) InsertionSort(items []int, orderBy string) ([]int, error) {
-	args := mock.Called(items, orderBy)
-
-	return args.Get(0).([]int), args.Error(1)
-}
 
 type knapsackUnitTest struct {
 	suite.Suite
@@ -26,14 +14,14 @@ type knapsackUnitTest struct {
 
 func (unit *knapsackUnitTest) TestNewKnapsack() {
 	unit.Run("Return an instance of Knapsack interface", func() {
-		sut := knapsack.NewKnapsack(10, new(sortMock))
+		sut := knapsack.NewKnapsack(10, new(insertionSortMock))
 		require.NotNil(unit.T(), sut)
 	})
 }
 
 func (unit *knapsackUnitTest) TestFirstFit() {
 	unit.Run("Return items added from set to Knapsack", func() {
-		sut := knapsack.NewKnapsack(10, new(sortMock))
+		sut := knapsack.NewKnapsack(10, new(insertionSortMock))
 		result := sut.FirstFit([]int{5, 5})
 		require.NotNil(unit.T(), result)
 		require.NotEmpty(unit.T(), result)
@@ -41,7 +29,7 @@ func (unit *knapsackUnitTest) TestFirstFit() {
 	})
 
 	unit.Run("Return a set which is less than the limit", func() {
-		sut := knapsack.NewKnapsack(10, new(sortMock))
+		sut := knapsack.NewKnapsack(10, new(insertionSortMock))
 		result := sut.FirstFit([]int{5, 6})
 		require.NotNil(unit.T(), result)
 		require.NotEmpty(unit.T(), result)
@@ -51,9 +39,9 @@ func (unit *knapsackUnitTest) TestFirstFit() {
 
 func (unit *knapsackUnitTest) TestBestFit() {
 	unit.Run("Return items which are ordered by its lowest value", func() {
-		sortMock := new(sortMock)
+		sortMock := new(insertionSortMock)
 
-		sortMock.On("InsertionSort", []int{5, 2, 3, 1}, sort.OrderAscending).Return([]int{1, 2, 3, 5}, nil)
+		sortMock.On("Sort", []int{5, 2, 3, 1}, sort.OrderAscending).Return([]int{1, 2, 3, 5}, nil)
 
 		sut := knapsack.NewKnapsack(10, sortMock)
 
@@ -78,7 +66,7 @@ type knapsackIntegrationTest struct {
 
 func (integration *knapsackIntegrationTest) TestBestFit() {
 	integration.Run("Return items which are ordered by its lowest value", func() {
-		sut := knapsack.NewKnapsack(10, sort.NewSort())
+		sut := knapsack.NewKnapsack(10, sort.NewInsertion())
 
 		result, err := sut.BestFit([]int{5, 2, 1, 3})
 

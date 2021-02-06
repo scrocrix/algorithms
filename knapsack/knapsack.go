@@ -17,11 +17,11 @@ type knapsack struct {
 	Knapsack
 	Limit int
 	Items []int
-	sort  sort.Sort
+	sort  sort.Insertion
 }
 
 // NewKnapsack constructs a new instance of Knapsack.
-func NewKnapsack(limit int, sort sort.Sort) *knapsack {
+func NewKnapsack(limit int, sort sort.Insertion) *knapsack {
 	return &knapsack{
 		Limit: limit,
 		sort:  sort,
@@ -51,7 +51,7 @@ func (k *knapsack) FirstFit(s []int) []int {
 }
 
 func (k *knapsack) BestFit(s []int) ([]int, error) {
-	set, err := k.sort.InsertionSort(s, sort.OrderAscending)
+	set, err := k.sort.Sort(s, sort.OrderAscending)
 
 	if err != nil {
 		return nil, err
